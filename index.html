@@ -330,7 +330,99 @@
       </div>
     </section>
 
-    <!-- ================= 8. MINI GAME: CATCH MY HEART ================= -->
+    <!-- ================= 8. SPECIAL VIDEO MOMENT ================= -->
+    <section class="section video-section" id="videoSection">
+      <div class="section-header">
+        <span class="section-tag" id="videoSectionTag">SPECIAL MOMENT 🎬</span>
+        <h2 class="section-title" id="videoSectionTitle">A Special Moment Just For You 🥺❤️</h2>
+        <p class="section-subtitle" id="videoSectionSubtitle">Every second with you is my favorite memory. Tap below to turn on the sound! 🎧✨</p>
+      </div>
+
+      <div class="video-card-container">
+        <!-- Subtle Romantic Floating Sparkles & Tiny Hearts -->
+        <div class="video-decorations" aria-hidden="true">
+          <span class="video-deco-item v-deco-sparkle-1">✨</span>
+          <span class="video-deco-item v-deco-heart-1">💖</span>
+          <span class="video-deco-item v-deco-sparkle-2">🌸</span>
+          <span class="video-deco-item v-deco-heart-2">💕</span>
+          <span class="video-deco-item v-deco-sparkle-3">✨</span>
+          <span class="video-deco-item v-deco-heart-3">💗</span>
+        </div>
+
+        <div class="video-wrapper" id="videoWrapper" title="Click to play or pause">
+          <!-- Subtle cinematic glass shine highlight -->
+          <div class="video-shine-fx" aria-hidden="true"></div>
+
+          <video
+            id="specialVideo"
+            class="special-video"
+            playsinline
+            webkit-playsinline
+            preload="metadata"
+            muted
+          >
+            <source src="assets/special_video.mp4" type="video/mp4">
+            Your browser does not support HTML5 video.
+          </video>
+
+          <!-- Romantic corner badge with soft glow -->
+          <div class="video-top-badge" id="videoTopBadge">
+            <span class="v-badge-dot"></span>
+            <span>Memory With Nidhi ❤️</span>
+          </div>
+
+          <!-- Beautiful Custom Center Glass Play Button (when paused / not started) -->
+          <button class="video-center-play-btn show-play-btn" id="videoPlayOverlayBtn" aria-label="Play Video">
+            <div class="center-play-glass">
+              <span class="center-play-icon">▶</span>
+            </div>
+            <span class="center-play-label">Play</span>
+          </button>
+
+          <!-- Replay Memory Overlay (shows when video ends) -->
+          <div class="video-ended-overlay hidden" id="videoEndedOverlay">
+            <div class="ended-overlay-backdrop"></div>
+            <div class="ended-overlay-content">
+              <span class="ended-heart-icon">💖</span>
+              <h4 class="ended-title">Our Little Memory</h4>
+              <p class="ended-subtext">Captured with love for Nidhi 🌸</p>
+              <button class="btn-primary replay-memory-btn" id="overlayReplayBtn">
+                <span>🔄</span>
+                <span>Replay Memory ❤️</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Video progress bar -->
+          <div class="video-progress-bar-wrap" id="videoProgressWrap" title="Seek video">
+            <div class="video-progress-bar-fill" id="videoProgressFill"></div>
+          </div>
+        </div>
+
+        <!-- Custom Controls Bar matching website design language -->
+        <div class="video-controls-bar">
+          <button class="btn-primary video-sound-btn pulse-btn" id="videoSoundToggle" title="Toggle sound">
+            <span class="v-sound-icon" id="videoSoundIcon">🔇</span>
+            <span class="v-sound-text" id="videoSoundText">🔇 Tap for Sound</span>
+          </button>
+
+          <button class="video-pill-btn" id="videoPlayBtn" title="Play or Pause video">
+            <span id="videoPlayBtnIcon">⏸️</span>
+            <span id="videoPlayBtnText">Pause</span>
+          </button>
+
+          <button class="video-pill-btn" id="videoRestartBtn" title="Replay memory">
+            <span>🔄</span>
+            <span id="videoRestartBtnText">Replay Memory ❤️</span>
+          </button>
+        </div>
+
+        <!-- Configurable Heartfelt Caption -->
+        <p class="video-caption-text" id="videoCaptionText">A little memory I wanted to keep forever ❤️</p>
+      </div>
+    </section>
+
+    <!-- ================= 9. MINI GAME: CATCH MY HEART ================= -->
     <section class="section game-section" id="gameSection">
       <div class="section-header">
         <span class="section-tag">CUTE CHALLENGE 🎮</span>

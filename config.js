@@ -112,22 +112,26 @@ const LOVE_CONFIG = {
   ],
 
   // --- Love Letter Text ---
- letterGreeting: "Dear Nidhi,",
+  letterGreeting: "Dear Nidhi,",
+  letterBody: `I don't really know how to put everything I feel into words, so I decided to make you a whole little corner of the internet instead. 😭❤️
 
-letterBody: `I don't really know how to put everything I feel into words, but somehow, whenever I try to describe you, words still don't feel enough.
+You make my days happier in ways you probably don't even realize.
 
-A girl who’s ravishing with an elegant and winsome smile on her face, which makes her eyes very flattering, accentuated by her tresses, and who looks miraculous in her yellow dress.
+Every random conversation, every laugh, every silly moment and every little thing about you has become a memory I genuinely love.
 
-But honestly, it's not just about how beautiful you look. It's the little things about you that make you so special to me — your smile, your presence, the way you make ordinary moments feel a little more beautiful, and the memories that somehow stay with me.
+I hope whenever you come back to this website, it reminds you of one simple thing:
 
-I wanted to make this little corner of the internet because sometimes a normal message just isn't enough to say what someone means to you.
+You are very, very special to me.`,
+  letterClosing: "With lots of love,",
+  letterSign: "Rajveer ❤️",
 
-So whenever you come back to this website, I hope you remember one simple thing:
-
-You are genuinely special to me, Nidhi. ❤️`,
-
-letterClosing: "With lots of love,",
-letterSign: "Rajveer ❤️",
+  // --- Special Video Moment ---
+  videoTag: "SPECIAL MOMENT 🎬",
+  videoTitle: "A Special Moment Just For You 🥺❤️",
+  videoSubtitle: "Every second with you is my favorite memory. Tap below to turn on the sound! 🎧✨",
+  videoCaption: "A little memory I wanted to keep forever ❤️",
+  videoReplayBtnText: "Replay Memory ❤️",
+  videoSrc: "assets/special_video.mp4",
 
   // --- Mini Game Settings ---
   gameMaxClicks: 5,

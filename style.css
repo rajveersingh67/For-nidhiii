@@ -1221,7 +1221,441 @@ img {
   margin-top: 8px;
 }
 
-/* ================= 8. MINI GAME: CATCH MY HEART 💘 ================= */
+/* ================= 8. SPECIAL VIDEO MOMENT ================= */
+.video-section {
+  position: relative;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.video-section.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.video-card-container {
+  max-width: 440px;
+  width: 100%;
+  margin: 0 auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Subtle Cinematic Romantic Decorations */
+.video-decorations {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.video-deco-item {
+  position: absolute;
+  filter: drop-shadow(0 2px 8px rgba(255, 101, 132, 0.35));
+  user-select: none;
+  pointer-events: none;
+}
+
+.v-deco-sparkle-1 {
+  top: -14px;
+  left: 6%;
+  font-size: 1.15rem;
+  animation: slowSparkle 4.5s infinite ease-in-out;
+}
+
+.v-deco-heart-1 {
+  top: 22%;
+  right: -10px;
+  font-size: 1.05rem;
+  animation: slowDriftHeart 6s infinite ease-in-out 0.8s;
+}
+
+.v-deco-sparkle-2 {
+  top: 52%;
+  left: -12px;
+  font-size: 1.1rem;
+  animation: slowSparkle 5s infinite ease-in-out 1.5s;
+}
+
+.v-deco-heart-2 {
+  bottom: 24%;
+  right: -8px;
+  font-size: 0.95rem;
+  animation: slowDriftHeart 5.5s infinite ease-in-out 2s;
+}
+
+.v-deco-sparkle-3 {
+  bottom: 65px;
+  left: 8%;
+  font-size: 1.2rem;
+  animation: slowSparkle 4s infinite ease-in-out 2.5s;
+}
+
+.v-deco-heart-3 {
+  top: 8%;
+  left: -10px;
+  font-size: 0.9rem;
+  animation: slowDriftHeart 7s infinite ease-in-out 3s;
+}
+
+@keyframes slowSparkle {
+  0%, 100% { opacity: 0.35; transform: scale(0.85) rotate(0deg); }
+  50% { opacity: 0.95; transform: scale(1.15) rotate(15deg); }
+}
+
+@keyframes slowDriftHeart {
+  0%, 100% { opacity: 0.35; transform: translateY(0) scale(0.9); }
+  50% { opacity: 0.85; transform: translateY(-8px) scale(1.08); }
+}
+
+/* Video Wrapper */
+.video-wrapper {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: min(340px, 84vw);
+  aspect-ratio: 9 / 16;
+  background: #000000;
+  border-radius: var(--border-radius-lg);
+  border: 3.5px solid rgba(255, 255, 255, 0.95);
+  box-shadow: 0 16px 45px rgba(255, 101, 132, 0.24), 0 0 0 1.5px rgba(255, 182, 193, 0.45), 0 6px 16px rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+  cursor: pointer;
+  touch-action: manipulation;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.35s ease, border-color 0.35s ease;
+}
+
+.video-wrapper:hover {
+  transform: translateY(-4px) scale(1.015);
+  box-shadow: 0 22px 55px rgba(255, 101, 132, 0.38), 0 0 0 2px rgba(255, 101, 132, 0.7);
+}
+
+.video-wrapper:active {
+  transform: scale(0.985);
+}
+
+/* Cinematic Shine Highlight */
+.video-shine-fx {
+  position: absolute;
+  top: -60%;
+  left: -60%;
+  width: 220%;
+  height: 220%;
+  background: linear-gradient(
+    120deg,
+    transparent 35%,
+    rgba(255, 255, 255, 0.06) 48%,
+    rgba(255, 220, 230, 0.2) 50%,
+    rgba(255, 255, 255, 0.06) 52%,
+    transparent 65%
+  );
+  transform: rotate(25deg);
+  pointer-events: none;
+  z-index: 3;
+  animation: cinematicShine 9s infinite cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes cinematicShine {
+  0%, 75% { transform: translateY(-130%) rotate(25deg); opacity: 0; }
+  78% { opacity: 1; }
+  88% { opacity: 1; }
+  92%, 100% { transform: translateY(130%) rotate(25deg); opacity: 0; }
+}
+
+.special-video {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 9 / 16;
+  object-fit: cover;
+  display: block;
+  border-radius: inherit;
+  background: #000;
+}
+
+/* Top Corner Romantic Badge */
+.video-top-badge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 4;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1.5px solid rgba(255, 182, 193, 0.7);
+  border-radius: 30px;
+  padding: 5px 14px;
+  font-family: var(--font-cute);
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--primary-dark-pink);
+  box-shadow: 0 4px 15px rgba(255, 101, 132, 0.18);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  pointer-events: none;
+  animation: subtleBadgePulse 4s infinite ease-in-out;
+}
+
+@keyframes subtleBadgePulse {
+  0%, 100% {
+    box-shadow: 0 4px 15px rgba(255, 101, 132, 0.18);
+    border-color: rgba(255, 182, 193, 0.7);
+  }
+  50% {
+    box-shadow: 0 4px 22px rgba(255, 101, 132, 0.38);
+    border-color: rgba(255, 101, 132, 0.9);
+  }
+}
+
+.v-badge-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #ff3366;
+  box-shadow: 0 0 8px rgba(255, 51, 102, 0.8);
+}
+
+/* Custom Center Glass Play Button (when paused / not started) */
+.video-center-play-btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1);
+  z-index: 5;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.3s;
+}
+
+.video-center-play-btn.show-play-btn {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.center-play-glass {
+  width: 68px;
+  height: 68px;
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 2.5px solid rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 30px rgba(255, 65, 108, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.5);
+  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.25s ease, background 0.25s ease;
+}
+
+.video-center-play-btn:hover .center-play-glass,
+.video-center-play-btn:active .center-play-glass {
+  transform: scale(1.1);
+  background: rgba(255, 255, 255, 0.65);
+  box-shadow: 0 14px 40px rgba(255, 65, 108, 0.55), 0 0 24px rgba(255, 101, 132, 0.45);
+}
+
+.center-play-icon {
+  font-size: 1.7rem;
+  color: #ff3366;
+  margin-left: 4px;
+  filter: drop-shadow(0 2px 6px rgba(255, 51, 102, 0.3));
+}
+
+.center-play-label {
+  font-family: var(--font-cute);
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: #ffffff;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.35);
+  padding: 3px 12px;
+  border-radius: 20px;
+  backdrop-filter: blur(6px);
+}
+
+/* Replay Memory Overlay (on video ended) */
+.video-ended-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+.video-ended-overlay.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.ended-overlay-backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(20, 12, 18, 0.68);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.ended-overlay-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: #ffffff;
+  animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.ended-heart-icon {
+  font-size: 2.4rem;
+  display: inline-block;
+  margin-bottom: 6px;
+  animation: heartThump 1.2s infinite alternate;
+}
+
+.ended-title {
+  font-size: clamp(1.25rem, 4vw, 1.5rem);
+  font-weight: 800;
+  color: #ffeef2;
+  margin-bottom: 4px;
+}
+
+.ended-subtext {
+  font-size: clamp(0.85rem, 2.8vw, 0.95rem);
+  color: #ffd6df;
+  margin-bottom: 18px;
+}
+
+.replay-memory-btn {
+  padding: 12px 24px;
+  font-size: 0.95rem;
+  font-weight: 800;
+  box-shadow: 0 8px 25px rgba(255, 65, 108, 0.55);
+}
+
+/* Progress Bar at Bottom of Video */
+.video-progress-bar-wrap {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: rgba(0, 0, 0, 0.35);
+  z-index: 4;
+  cursor: pointer;
+  transition: height 0.2s ease;
+}
+
+.video-wrapper:hover .video-progress-bar-wrap {
+  height: 7px;
+}
+
+.video-progress-bar-fill {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, #ff6584 0%, #ff3366 100%);
+  border-radius: 0 4px 4px 0;
+  box-shadow: 0 0 8px rgba(255, 101, 132, 0.8);
+  transition: width 0.1s linear;
+}
+
+/* Video Controls Bar */
+.video-controls-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 18px;
+  flex-wrap: wrap;
+  width: 100%;
+  z-index: 3;
+}
+
+.video-sound-btn {
+  padding: 12px 24px;
+  font-size: clamp(0.9rem, 3vw, 1rem);
+  font-weight: 800;
+  min-height: 46px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 6px 20px rgba(255, 101, 132, 0.32);
+}
+
+.video-sound-btn.unmuted {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35);
+  animation: none;
+}
+
+.video-pill-btn {
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 2px solid #ffccd5;
+  border-radius: 50px;
+  padding: 10px 18px;
+  font-family: var(--font-cute);
+  font-size: clamp(0.85rem, 2.6vw, 0.95rem);
+  font-weight: 700;
+  color: var(--primary-dark-pink);
+  box-shadow: 0 4px 15px rgba(255, 101, 132, 0.12);
+  cursor: pointer;
+  touch-action: manipulation;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 46px;
+  transition: all 0.25s ease;
+}
+
+.video-pill-btn:hover, .video-pill-btn:active {
+  background: #ffffff;
+  border-color: var(--primary-pink);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 101, 132, 0.25);
+}
+
+.video-caption-text {
+  font-family: var(--font-handwritten);
+  font-size: clamp(1.2rem, 3.6vw, 1.45rem);
+  font-weight: 700;
+  color: #e0245e;
+  margin-top: 14px;
+  letter-spacing: 0.3px;
+  line-height: 1.35;
+}
+
+/* ================= 9. MINI GAME: CATCH MY HEART 💘 ================= */
 .game-arena {
   position: relative;
   width: 100%;
@@ -1937,6 +2371,30 @@ img {
     padding: 30px 16px 25px 16px;
   }
 
+  .video-card-container {
+    max-width: 100%;
+  }
+
+  .video-wrapper {
+    max-width: min(290px, 82vw);
+  }
+
+  .video-controls-bar {
+    gap: 8px;
+  }
+
+  .video-sound-btn {
+    padding: 10px 18px;
+    font-size: 0.88rem;
+    min-height: 44px;
+  }
+
+  .video-pill-btn {
+    padding: 8px 14px;
+    font-size: 0.82rem;
+    min-height: 42px;
+  }
+
   .night-actions {
     flex-direction: column;
     align-items: stretch;
@@ -1952,6 +2410,20 @@ img {
   .hero-section {
     padding-left: 10px;
     padding-right: 10px;
+  }
+
+  .video-wrapper {
+    max-width: min(260px, 80vw);
+  }
+
+  .video-sound-btn {
+    padding: 8px 14px;
+    font-size: 0.8rem;
+  }
+
+  .video-pill-btn {
+    padding: 7px 11px;
+    font-size: 0.78rem;
   }
 
   .sticker-grid {

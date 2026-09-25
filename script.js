@@ -1063,6 +1063,266 @@ function initNightSky() {
   });
 }
 
+/* ================= 15.5 SPECIAL VIDEO SECTION ================= */
+function initVideoSection() {
+  const video = document.getElementById('specialVideo');
+  const section = document.getElementById('videoSection');
+  const soundToggle = document.getElementById('videoSoundToggle');
+  const soundIcon = document.getElementById('videoSoundIcon');
+  const soundText = document.getElementById('videoSoundText');
+  const playBtn = document.getElementById('videoPlayBtn');
+  const playBtnIcon = document.getElementById('videoPlayBtnIcon');
+  const playBtnText = document.getElementById('videoPlayBtnText');
+  const restartBtn = document.getElementById('videoRestartBtn');
+  const restartBtnText = document.getElementById('videoRestartBtnText');
+  const playOverlayBtn = document.getElementById('videoPlayOverlayBtn');
+  const endedOverlay = document.getElementById('videoEndedOverlay');
+  const overlayReplayBtn = document.getElementById('overlayReplayBtn');
+  const wrapper = document.getElementById('videoWrapper');
+  const progressWrap = document.getElementById('videoProgressWrap');
+  const progressFill = document.getElementById('videoProgressFill');
+  const captionEl = document.getElementById('videoCaptionText');
+
+  if (!video || !section) return;
+
+  // Set configurable texts from LOVE_CONFIG
+  const tagEl = document.getElementById('videoSectionTag');
+  const titleEl = document.getElementById('videoSectionTitle');
+  const subtitleEl = document.getElementById('videoSectionSubtitle');
+  if (tagEl && LOVE_CONFIG.videoTag) tagEl.textContent = LOVE_CONFIG.videoTag;
+  if (titleEl && LOVE_CONFIG.videoTitle) titleEl.textContent = LOVE_CONFIG.videoTitle;
+  if (subtitleEl && LOVE_CONFIG.videoSubtitle) subtitleEl.textContent = LOVE_CONFIG.videoSubtitle;
+  if (captionEl && LOVE_CONFIG.videoCaption) captionEl.textContent = LOVE_CONFIG.videoCaption;
+  if (restartBtnText && LOVE_CONFIG.videoReplayBtnText) restartBtnText.textContent = LOVE_CONFIG.videoReplayBtnText;
+
+  let userManuallyPaused = false;
+  let bgMusicPausedByVideo = false;
+
+  const updatePlayUI = (isPlaying) => {
+    if (isPlaying) {
+      if (playOverlayBtn) playOverlayBtn.classList.remove('show-play-btn');
+      if (endedOverlay) endedOverlay.classList.add('hidden');
+      if (playBtnIcon) playBtnIcon.textContent = '⏸️';
+      if (playBtnText) playBtnText.textContent = 'Pause';
+    } else {
+      if (playOverlayBtn && (!endedOverlay || endedOverlay.classList.contains('hidden'))) {
+        playOverlayBtn.classList.add('show-play-btn');
+      }
+      if (playBtnIcon) playBtnIcon.textContent = '▶️';
+      if (playBtnText) playBtnText.textContent = 'Play';
+    }
+  };
+
+  const updateSoundUI = (isMuted) => {
+    if (isMuted) {
+      if (soundIcon) soundIcon.textContent = '🔇';
+      if (soundText) soundText.textContent = '🔇 Tap for Sound';
+      if (soundToggle) {
+        soundToggle.classList.add('pulse-btn');
+        soundToggle.classList.remove('unmuted');
+        soundToggle.setAttribute('title', 'Unmute Video');
+      }
+    } else {
+      if (soundIcon) soundIcon.textContent = '🔊';
+      if (soundText) soundText.textContent = '🔊 Sound On';
+      if (soundToggle) {
+        soundToggle.classList.remove('pulse-btn');
+        soundToggle.classList.add('unmuted');
+        soundToggle.setAttribute('title', 'Mute Video');
+      }
+    }
+  };
+
+  // Replay action helper
+  const replayVideo = (e) => {
+    if (e) {
+      e.stopPropagation();
+      const coords = getEventCoords(e);
+      spawnHeartBurst(coords.x, coords.y, 10);
+    }
+    sounds.init();
+    sounds.playVictory();
+    if (endedOverlay) endedOverlay.classList.add('hidden');
+    video.currentTime = 0;
+    userManuallyPaused = false;
+    video.play().then(() => {
+      updatePlayUI(true);
+    }).catch(() => {});
+  };
+
+  // Intersection Observer for smooth entrance animation and autoplay
+  const videoObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        section.classList.add('in-view');
+        // Autoplay muted on viewport enter if not manually paused by user and not ended
+        if (video.paused && !userManuallyPaused && (!endedOverlay || endedOverlay.classList.contains('hidden'))) {
+          const playPromise = video.play();
+          if (playPromise !== undefined) {
+            playPromise.then(() => {
+              updatePlayUI(true);
+            }).catch(() => {
+              updatePlayUI(false);
+            });
+          }
+        }
+      }
+    });
+  }, { threshold: 0.25 });
+
+  videoObserver.observe(section);
+
+  // Video event listeners
+  video.addEventListener('play', () => {
+    updatePlayUI(true);
+  });
+
+  video.addEventListener('pause', () => {
+    updatePlayUI(false);
+  });
+
+  video.addEventListener('timeupdate', () => {
+    if (video.duration && progressFill) {
+      const pct = (video.currentTime / video.duration) * 100;
+      progressFill.style.width = `${pct}%`;
+    }
+  });
+
+  // When video ends, do not auto-restart; show Replay Memory overlay and trigger subtle particles
+  video.addEventListener('ended', () => {
+    updatePlayUI(false);
+    if (playOverlayBtn) playOverlayBtn.classList.remove('show-play-btn');
+    if (endedOverlay) endedOverlay.classList.remove('hidden');
+
+    // Spawn a gentle, romantic heart/sparkle burst around the video card
+    const rect = wrapper.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    spawnHeartBurst(centerX, centerY, 12);
+    sounds.playChime();
+
+    // If bg music was paused by video sound, resume it
+    if (bgMusicPausedByVideo && musicManager && !musicManager.isPlaying) {
+      musicManager.startMusic(false);
+      bgMusicPausedByVideo = false;
+    }
+  });
+
+  // Sound Toggle Handler
+  if (soundToggle) {
+    soundToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      sounds.init();
+
+      if (video.muted) {
+        video.muted = false;
+        video.volume = 1.0;
+        updateSoundUI(false);
+        sounds.playChime();
+        const coords = getEventCoords(e);
+        spawnHeartBurst(coords.x, coords.y, 8);
+
+        // If background music is playing, pause it so video audio is clear
+        if (musicManager && musicManager.isPlaying) {
+          musicManager.pauseMusic();
+          bgMusicPausedByVideo = true;
+        }
+
+        // If video was paused, start playing
+        if (video.paused) {
+          userManuallyPaused = false;
+          video.play().catch(() => {});
+        }
+      } else {
+        video.muted = true;
+        updateSoundUI(true);
+        sounds.playPop();
+
+        // Resume bg music if it was playing before
+        if (bgMusicPausedByVideo && musicManager && !musicManager.isPlaying) {
+          musicManager.startMusic(false);
+          bgMusicPausedByVideo = false;
+        }
+      }
+    });
+  }
+
+  // Play/Pause on Video wrapper tap
+  const togglePlayPause = (e) => {
+    // If ended overlay is visible, replay instead
+    if (endedOverlay && !endedOverlay.classList.contains('hidden')) {
+      replayVideo(e);
+      return;
+    }
+
+    sounds.init();
+    if (video.paused) {
+      userManuallyPaused = false;
+      video.play().then(() => {
+        updatePlayUI(true);
+        sounds.playPop();
+      }).catch(() => {});
+    } else {
+      userManuallyPaused = true;
+      video.pause();
+      updatePlayUI(false);
+      sounds.playPop();
+    }
+  };
+
+  if (wrapper) {
+    wrapper.addEventListener('click', (e) => {
+      // Don't trigger if click was on sound button, overlay button, or progress bar
+      if (e.target.closest('#videoProgressWrap') || e.target.closest('#overlayReplayBtn')) return;
+      togglePlayPause(e);
+    });
+  }
+
+  if (playOverlayBtn) {
+    playOverlayBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      togglePlayPause(e);
+    });
+  }
+
+  if (overlayReplayBtn) {
+    overlayReplayBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      replayVideo(e);
+    });
+  }
+
+  if (playBtn) {
+    playBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      togglePlayPause(e);
+    });
+  }
+
+  if (restartBtn) {
+    restartBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      replayVideo(e);
+    });
+  }
+
+  if (progressWrap) {
+    progressWrap.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (!video.duration) return;
+      const rect = progressWrap.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const ratio = Math.max(0, Math.min(1, clickX / rect.width));
+      video.currentTime = ratio * video.duration;
+      sounds.playPop();
+    });
+  }
+
+  // Initial state check
+  updateSoundUI(video.muted);
+  updatePlayUI(!video.paused);
+}
+
 /* ================= 16. AUDIO CONTROLS & LISTENERS ================= */
 function initSoundControls() {
   musicManager = new MusicManager();
@@ -1120,6 +1380,7 @@ window.addEventListener('DOMContentLoaded', () => {
   initStickerWall();
   initLoveCalculator();
   initLoveLetter();
+  initVideoSection();
   initCatchHeartGame();
   initSecretButton();
   initNightSky();
